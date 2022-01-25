@@ -18,49 +18,49 @@ void zsf_map_ch_delete(
     , zsf_ObjArr *objArrs);
 
 FILE* zsf_map_ch_export_commondata(
-	  char const mapname[]
-	, z__Vint3 chunksize);
+      char const mapname[]
+    , z__Vint3 chunksize);
 
 FILE* zsf_map_ch_export_chunk(
-	  char const *mapname
-	, z__Vint3 const Chunk_cords
-	, void const *chunk
-	, z__size const plotsize
-	, z__Vint3 const chunksize
-	, zsf_ObjArr const objectSet
-	, z__bool should_writeObjects);
+      char const *mapname
+    , z__Vint3 const Chunk_cords
+    , void const *chunk
+    , z__size const plotsize
+    , z__Vint3 const chunksize
+    , zsf_ObjArr const objectSet
+    , z__bool should_writeObjects);
 
 FILE* zsf_map_ch_load_chunk(
-	  const char mapname[]
-	, z__Vint3 const Chunk_cords
-	, z__size const plotsize
-	, z__Vint3 const chunksize
-	, void **chunk
-	, zsf_ObjArr *objectSet);
+      const char mapname[]
+    , z__Vint3 const Chunk_cords
+    , z__size const plotsize
+    , z__Vint3 const chunksize
+    , void **chunk
+    , zsf_ObjArr *objectSet);
 
 FILE* zsf_map_ch_load_commondata(
-	  const char mapname[]
-	, z__Vint3 *chunksize);
+      const char mapname[]
+    , z__Vint3 *chunksize);
 
 int zsf_map_ch_load_st(
-	  char const *mapname
-	, z__size const plotsize
-	, void ***chunk
-	, z__Vint3 *chunksize
-	, zsf_ObjArr **objectSet
-	, z__size *objCount
-	, FILE **cd_fp
-	, FILE **ch_fp);
+      char const *mapname
+    , z__size const plotsize
+    , void ***chunk
+    , z__Vint3 *chunksize
+    , zsf_ObjArr **objectSet
+    , z__size *objCount
+    , FILE **cd_fp
+    , FILE **ch_fp);
 
 void zsf_map_ch_export_st(
-	  char const *mapname
-	, void const *chunk
-	, z__size const plotsize
-	, z__Vint3 const chunksize
-	, zsf_ObjArr const objectSet
-	, z__bool should_writeObjects
-	, FILE **cd_fp
-	, FILE **ch_fp);
+      char const *mapname
+    , void const *chunk
+    , z__size const plotsize
+    , z__Vint3 const chunksize
+    , zsf_ObjArr const objectSet
+    , z__bool should_writeObjects
+    , FILE **cd_fp
+    , FILE **ch_fp);
 
 #define zsf_MapCh_createEmpty(map, in_x, in_y, in_z, in_r)\
     {                                               \
@@ -69,7 +69,7 @@ void zsf_map_ch_export_st(
             in_x, in_y, in_z, (map)->chunkRadius    \
           , sizeof(**(map)->chunks)                 \
           , (void***)&(map)->chunks                 \
-          , &(map)->objectSetArrs										\
+          , &(map)->objectSetArrs                   \
           , &(map)->chunkAndObjCount);              \
         (map)->size.x = in_x;           \
         (map)->size.y = in_y;           \
@@ -81,121 +81,121 @@ void zsf_map_ch_export_st(
 
 
 #define zsf_MapCh_load_st(map, name)\
-	{\
-		FILE *_map_ch_lod_st_cd, *_map_ch_lod_st_ch;	\
-		zsf_map_ch_load_st(							\
-				  name											\
-				, sizeof(**(map)->chunks)		\
-				, (void***)&(map)->chunks		\
-				, &(map)->size							\
-				, &(map)->objectSetArrs			\
-				, &(map)->chunkAndObjCount	\
-				, &_map_ch_lod_st_ch				\
-				, &_map_ch_lod_st_cd);			\
-		fclose(_map_ch_lod_st_ch); fclose(_map_ch_lod_st_cd); \
-	}
+    {\
+        FILE *_map_ch_lod_st_cd, *_map_ch_lod_st_ch;    \
+        zsf_map_ch_load_st(                             \
+                  name                                  \
+                , sizeof(**(map)->chunks)               \
+                , (void***)&(map)->chunks               \
+                , &(map)->size                          \
+                , &(map)->objectSetArrs                 \
+                , &(map)->chunkAndObjCount              \
+                , &_map_ch_lod_st_ch                    \
+                , &_map_ch_lod_st_cd);                  \
+        fclose(_map_ch_lod_st_ch); fclose(_map_ch_lod_st_cd); \
+    }
 
 #define zsf_MapCh_load_st_fp(map, name, ch, cd)\
-	{\
-		zsf_map_ch_load_st(						\
-				  name									  \
-				, sizeof(**(map)->chunks)	\
-				, (void***)&(map)->chunks	\
-				, &(map)->size						\
-				, &(map)->objectSetArrs		\
-				, &(map)->chunkAndObjCount\
-				, &cd									    \
-				, &ch);									  \
-	}
+    {\
+        zsf_map_ch_load_st(                     \
+                  name                          \
+                , sizeof(**(map)->chunks)       \
+                , (void***)&(map)->chunks       \
+                , &(map)->size                  \
+                , &(map)->objectSetArrs         \
+                , &(map)->chunkAndObjCount      \
+                , &cd                           \
+                , &ch);                         \
+    }
 
 
 #define zsf_MapCh_export_st(map, name, chunkno, shouldwriteObjects)\
-	{													\
-		FILE *_map_ch_exp_st_cd, *_map_ch_exp_st_ch;	\
-		z__typeof(chunkno) _map_ch_exp_st_chN = chunkno;\
-		if(_map_ch_exp_st_chN < (map)->chunkAndObjCount){		\
-			zsf_map_ch_export_st(					        \
-				  name									            \
-				, (map)->chunks[_map_ch_exp_st_chN]	\
-				, sizeof(**(map)->chunks)				    \
-				, (map)->size							          \
-				, (map)->objectSetArrs[_map_ch_exp_st_chN]	\
-				, shouldwriteObjects					          \
-				, &_map_ch_exp_st_cd					          \
-				, &_map_ch_exp_st_ch);			\
-			fclose(_map_ch_exp_st_cd);		\
-			fclose(_map_ch_exp_st_ch);		\
-		}												        \
-	}
+    {                                                    \
+        FILE *_map_ch_exp_st_cd, *_map_ch_exp_st_ch;    \
+        z__typeof(chunkno) _map_ch_exp_st_chN = chunkno;\
+        if(_map_ch_exp_st_chN < (map)->chunkAndObjCount){   \
+            zsf_map_ch_export_st(                           \
+                  name                                      \
+                , (map)->chunks[_map_ch_exp_st_chN]         \
+                , sizeof(**(map)->chunks)                   \
+                , (map)->size                               \
+                , (map)->objectSetArrs[_map_ch_exp_st_chN]  \
+                , shouldwriteObjects                        \
+                , &_map_ch_exp_st_cd                        \
+                , &_map_ch_exp_st_ch);                      \
+            fclose(_map_ch_exp_st_cd);                      \
+            fclose(_map_ch_exp_st_ch);                      \
+        }                                                   \
+    }
 
 #define zsf_MapCh_export_st_fp(map, name, chunkno, shouldwriteObjects, ch, cd)\
-	{													                      \
-		z__typeof(chunkno) _map_ch_exp_st = chunkno;	\
-		if(chunkno < (map)->chunkCount{					      \
-			zse_map_ch_export_st__raw(					        \
-				  name									                  \
-				, (map)->chunks[chunkno]				\
-				, sizeof(**(map)->chunks)				\
-				, (map)->size							      \
-				, (map)->objectSetArrs[_map_ch_exp_st]\
-				, shouldwriteObjects					        \
-				, &cd									                \
-				, &ch);									              \
-		}												                  \
-	}
+    {                                                   \
+        z__typeof(chunkno) _map_ch_exp_st = chunkno;    \
+        if(chunkno < (map)->chunkCount{                 \
+            zse_map_ch_export_st__raw(                  \
+                  name                                  \
+                , (map)->chunks[chunkno]                \
+                , sizeof(**(map)->chunks)               \
+                , (map)->size                           \
+                , (map)->objectSetArrs[_map_ch_exp_st]  \
+                , shouldwriteObjects                    \
+                , &cd                                   \
+                , &ch);                                 \
+        }                                               \
+    }
 
 #define zsf_MapCh_export_commondata_fp(map, name, fp)\
-	{																                            \
-		*(fp) = zsf_map_ch_export_commondata(name, (map)->size);	\
-	}
+    {                                                                                            \
+        *(fp) = zsf_map_ch_export_commondata(name, (map)->size);    \
+    }
 
 #define zsf_MapCh_export_chunk_fp(name, cord, map, chnum, should_writeObjects, fp)\
-	{												            \
-		*(fp) = zsf_map_ch_export_chunk(	\
-				  name								        \
-				, cord								        \
-				, (map)->chunks[chnum]				\
-				, sizeof(**(map)->chunks)			\
-				, (map)->size						      \
-				, (map)->objectSetArrs[chnum]	\
-				, should_writeObjects);				\
-	}
+    {                                           \
+        *(fp) = zsf_map_ch_export_chunk(        \
+                  name                          \
+                , cord                          \
+                , (map)->chunks[chnum]          \
+                , sizeof(**(map)->chunks)       \
+                , (map)->size                   \
+                , (map)->objectSetArrs[chnum]   \
+                , should_writeObjects);         \
+    }
 
 
 #define zsf_MapCh_export_commondata(name, map)\
-	{																	                            \
-	    fclose(zsf_map_ch_export_commondata(name, (map)->size));	\
-	}
+    {                                                           \
+        fclose(zsf_map_ch_export_commondata(name, (map)->size));\
+    }
 
 #define zsf_MapCh_export_chunk(name, cord, map, chnum, should_writeObjects)\
-	{												                  \
-		fclose(zsf_map_ch_export_chunk(		      \
-				  name								              \
-				, cord								              \
-				, (map)->chunks[chnum]				      \
-				, sizeof(**(map)->chunks)			      \
-				, (map)->size						            \
-				, (map)->objectSetArrs[chnum]				\
-				, should_writeObjects));			      \
-	}
+    {                                           \
+        fclose(zsf_map_ch_export_chunk(         \
+                  name                          \
+                , cord                          \
+                , (map)->chunks[chnum]          \
+                , sizeof(**(map)->chunks)       \
+                , (map)->size                   \
+                , (map)->objectSetArrs[chnum]   \
+                , should_writeObjects));        \
+    }
 
 #define zsf_MapCh_load_commondata_fp(name, map, fp)\
-  {                                     \
-		(*fp) = zsf_map_ch_load_commondata(	\
-					name,							          \
-					&(map)->size					      \
-				);									          \
+  {                                         \
+        (*fp) = zsf_map_ch_load_commondata( \
+                    name,                   \
+                    &(map)->size            \
+                );                          \
   }
 
 #define zse_MapCh_load_chunk_fp(name, cords, map, chnum, fp)\
-  {\
-      (*fp) =	zsf_map_ch_load_chunk(    \
-              name						          \
-              , cords						        \
-              , sizeof(**(map)->chunks)		  \
-              , (map)->size					        \
-              , &(map)->chunks[chnum]		    \
-              , &(map)->objectSetArrs[chnum]);	\
+  {                                         \
+      (*fp) = zsf_map_ch_load_chunk(        \
+              name                          \
+              , cords                       \
+              , sizeof(**(map)->chunks)     \
+              , (map)->size                 \
+              , &(map)->chunks[chnum]       \
+              , &(map)->objectSetArrs[chnum]);    \
   }
 
 
