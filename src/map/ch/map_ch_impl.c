@@ -4,8 +4,6 @@
 #include "impl.h"
 #include "../../obj/impl.h"
 
-
-
 void zsf_map_ch_createEmpty(
     const z__u32 x, const z__u32 y, const z__u32 z
     , const z__u32 chunkRadius
@@ -89,12 +87,12 @@ FILE* zsf_map_ch_export_chunk(
         lgp("Dumping %d Objects", z__Arr_getUsed(objectSet));
         fwrite(&z__Arr_getUsed(objectSet), sizeof(z__Arr_getUsed(objectSet)), 1, fp);
 
-        for(int i = 0; i < z__Arr_getUsed(objectSet); i++) {
+        for(size_t i = 0; i < z__Arr_getUsed(objectSet); i++) {
 
           z__Dynt *_obj = &z__Arr_getVal(objectSet, i);
           z__fio_Dynt_dump(_obj, fp);
 
-          lgp("(%d/%d) Objects %s(s) Dump\n"
+          lgp("(%lu/%d) Objects %s(s) Dump\n"
             "       |- ID %d\n"
             "       |- UnitSize %ld bytes\n"
             "       |- Count %d\n"
