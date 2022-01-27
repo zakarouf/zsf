@@ -77,7 +77,7 @@ void zsf_map_ch_export_st(
     }
 
 #define zsf_MapCh_delete(map)\
-    zsf_map_ch_delete((map)->chunks, (map)->objectSetArrs, (map)->chunkAndObjCount)
+    zsf_map_ch_delete((map)->chunkAndObjCount, (void **)(map)->chunks, (map)->objectSetArrs)
 
 
 #define zsf_MapCh_load_st(map, name)\
